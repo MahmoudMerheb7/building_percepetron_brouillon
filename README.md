@@ -71,7 +71,7 @@ Un perceptron a été implémenté manuellement avec les caractéristiques suiva
 - **Mécanisme d’optimisation :** Descente de gradient.
 - **Paramètres :** Taux d’apprentissage (0.01), nombre d’itérations (1000).
 
-#### **Entraîment et prédictions :**
+#### **Entraînement et prédictions :**
 
 - Entraînement sur 80 % des données.
 - Prédictions et évaluation sur les 20 % restants.
@@ -87,21 +87,18 @@ Un perceptron a été implémenté manuellement avec les caractéristiques suiva
 - **Faux négatifs (4)** : Tumeurs malignes manquées.
 - **Vrais négatifs (67)** : Tumeurs bénignes correctement prédites.
 
-### **Courbe ROC et score ROC-AUC :**
+### **Précision, Rappel et F1-Score :**
 
-- **ROC-AUC : 1.00** (parfait).
-- Une séparation parfaite entre les classes est observée, ce qui pourrait être attribué à une forte linéarité des données après ACP.
-
-### **Courbe Précision-Rappel :**
-
-- Montre un bon compromis entre la précision et le rappel.
+- **Précision (Precision)** : 100 % pour la classe maligne et 94 % pour la classe bénigne.
+- **Rappel (Recall)** : 91 % pour la classe maligne et 100 % pour la classe bénigne.
+- **F1-Score** : Indique un bon équilibre entre précision et rappel, particulièrement élevé pour les deux classes.
 
 ---
 
 ## **Conclusions**
 
 - Le perceptron est très performant sur ce problème avec des données linéairement séparables.
-- Cependant, les résultats doivent être validés avec des données plus complexes et éventuellement d’autres modèles (SVM, réseaux de neurones).
+- Cependant, les résultats montrent des limites en termes de flexibilité pour des données plus complexes ou non linéaires.
 
 ---
 
@@ -117,8 +114,8 @@ Un perceptron a été implémenté manuellement avec les caractéristiques suiva
 
 3. **Exploration de modèles avancés :**
 
-   - SVM avec noyaux non linéaires.
-   - Réseaux de neurones multicouches (MLP).
+   - Ajouter une couche cachée pour transformer le perceptron en réseau de neurones multicouche (MLP).
+   - Tester des modèles comme les SVM avec noyaux non linéaires.
 
 4. **Enrichissement des données :**
 
@@ -141,18 +138,5 @@ Un perceptron a été implémenté manuellement avec les caractéristiques suiva
 
 ---
 
-## **Exécution**
-
-1. Clonez le dépôt.
-2. Installez les dépendances via pip :
-   ```bash
-   pip install -r requirements.txt
+er notebook notebook.ipynb
    ```
-3. Lancez le notebook pour reproduire l’analyse :
-   ```bash
-   jupyter notebook notebook.ipynb
-   ```
-
-
-
-
