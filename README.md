@@ -1,88 +1,158 @@
 # **README: Analyse des Données et Modélisation avec le Perceptron**
 
 ## **Introduction**
-Ce projet est une analyse des données relatives à un problème de classification binaire des tumeurs (étiquettes bénignes ou malignes) à partir de caractéristiques calculées sur des images de masses. Les étapes incluent la préparation des données, la réduction de dimensionnalité via l’ACP (Analyse en Composantes Principales), et l’entraînement d’un perceptron personnalisé.
+
+Ce projet porte sur l’analyse des données relatives à un problème de classification binaire des tumeurs (étiquettes bénigne ou maligne) à partir de caractéristiques calculées sur des images de masses. Les étapes incluent la préparation des données, la visualisation, la réduction de dimensionnalité via l’ACP (Analyse en Composantes Principales), et l’entraînement d’un perceptron personnalisé.
 
 ---
 
-## **Fonctionnalités principales**
-- Chargement et préparation des données avec standardisation.
-- Analyse exploratoire des données : visualisations (distributions, corrélations, boxplots).
-- Réduction de dimensionnalité via l’Analyse en Composantes Principales (ACP).
-- Implémentation et entraînement d’un perceptron personnalisé pour la classification binaire.
-- Évaluation des performances du modèle avec des métriques clés (précision, courbes ROC et Précision-Rappel).
+## **Structure du Projet**
+
+### **1. Chargement et préparation des données**
+
+Les étapes principales incluent :
+
+- Suppression des colonnes inutiles (étiquettes uniques, colonnes vides).
+- Encodage de la variable cible (`diagnosis`) :
+  - `M` (maligne) → 1.
+  - `B` (bénigne) → 0.
+- Standardisation des caractéristiques à l’aide de `StandardScaler`.
+
+### **2. Visualisation des données**
+
+#### **Distribution de la variable cible**
+
+Un graphique à barres permet de visualiser le déséquilibre entre les classes bénignes et malignes.
+
+#### **Histogrammes des caractéristiques**
+
+- Les caractéristiques sont séparées en trois groupes :
+  - Moyennes (`_mean`).
+  - Erreurs standards (`_se`).
+  - Valeurs maximales (`_worst`).
+- Les distributions montrent des différences marquées entre les classes pour certaines variables (échelle, taille, et régularité des contours).
+
+#### **Boxplots**
+
+- Les boxplots révèlent une nette séparation des classes pour des caractéristiques comme `radius_mean` et `concave points_mean`.
+- La classe maligne présente souvent des valeurs extrêmes, révélant une variabilité importante.
+
+#### **Scatterplots des paires de variables**
+
+- Les scatterplots montrent les relations entre les paires de variables principales (échantillons colorés selon `diagnosis`).
+- Une forte corrélation est observée entre des variables comme `radius_mean` et `perimeter_mean`.
+
+#### **Matrice de corrélation**
+
+- Une heatmap met en évidence les fortes corrélations entre des groupes de variables redondantes, justifiant l’utilisation de l’ACP pour réduire la dimensionnalité.
+
+### **3. Analyse en Composantes Principales (ACP)**
+
+#### **Objectif :**
+
+- Capturer la variance des données tout en réduisant le nombre de dimensions.
+
+#### **Résultats :**
+
+- Les 4 premières composantes principales expliquent plus de 70 % de la variance.
+- Une visualisation de la variance expliquée montre la contribution cumulative des composantes principales.
+
+#### **Contributions des variables :**
+
+- Les variables comme `concave points_mean`, `radius_mean`, et `perimeter_mean` contribuent fortement à PC1, capturant les aspects liés à la taille et la forme des tumeurs.
+
+### **4. Modélisation avec le perceptron**
+
+#### **Perceptron personnalisé :**
+
+Un perceptron a été implémenté manuellement avec les caractéristiques suivantes :
+
+- **Fonction de coût :** Log-loss.
+- **Mécanisme d’optimisation :** Descente de gradient.
+- **Paramètres :** Taux d’apprentissage (0.01), nombre d’itérations (1000).
+
+#### **Entraîment et prédictions :**
+
+- Entraînement sur 80 % des données.
+- Prédictions et évaluation sur les 20 % restants.
 
 ---
 
-## **Installation**
-### **Prérequis :**
-- Python 3.x
-- Bibliothèques : `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`
+## **Résultats et interprétations**
 
-### **Instructions :**
-1. Clonez le dépôt :
-   ```bash
-   git clone https://github.com/username/project.git
-   ```
-2. Accédez au dossier du projet :
-   ```bash
-   cd project
-   ```
-3. Installez les dépendances :
-   ```bash
-   pip install -r requirements.txt
-   ```
+### **Matrice de confusion :**
+
+- **Vrais positifs (43)** : Tumeurs malignes correctement prédites.
+- **Faux positifs (0)** : Tumeur bénigne incorrectement classée comme maligne.
+- **Faux négatifs (4)** : Tumeurs malignes manquées.
+- **Vrais négatifs (67)** : Tumeurs bénignes correctement prédites.
+
+### **Courbe ROC et score ROC-AUC :**
+
+- **ROC-AUC : 1.00** (parfait).
+- Une séparation parfaite entre les classes est observée, ce qui pourrait être attribué à une forte linéarité des données après ACP.
+
+### **Courbe Précision-Rappel :**
+
+- Montre un bon compromis entre la précision et le rappel.
 
 ---
 
-## **Utilisation**
-### **1. Exécuter le notebook :**
-Le fichier `notebook.ipynb` contient toutes les étapes d'analyse et de modélisation. Lancez-le avec :
-   ```bash
-   jupyter notebook notebook.ipynb
-   ```
+## **Conclusions**
 
-### **2. Script Python :**
-Si vous souhaitez exécuter uniquement le perceptron personnalisé, utilisez le fichier `perceptron.py`. Exemple d'utilisation :
-   ```bash
-   python perceptron.py
-   ```
+- Le perceptron est très performant sur ce problème avec des données linéairement séparables.
+- Cependant, les résultats doivent être validés avec des données plus complexes et éventuellement d’autres modèles (SVM, réseaux de neurones).
+
+---
+
+## **Améliorations possibles**
+
+1. **Validation croisée :**
+
+   - Tester le modèle sur différents sous-ensembles pour confirmer la robustesse.
+
+2. **Gestion du déséquilibre des classes :**
+
+   - Utiliser des techniques comme le sur/sous-échantillonnage ou pondérer les classes.
+
+3. **Exploration de modèles avancés :**
+
+   - SVM avec noyaux non linéaires.
+   - Réseaux de neurones multicouches (MLP).
+
+4. **Enrichissement des données :**
+
+   - Obtenir un jeu de données plus large et varié.
 
 ---
 
 ## **Structure des fichiers**
-- `data.csv` : Données brutes du projet.
-- `notebook.ipynb` : Notebook contenant l'analyse complète et les visualisations.
-- `perceptron.py` : Fichier Python implémentant le perceptron personnalisé.
-- `requirements.txt` : Liste des dépendances pour le projet.
+
+- `data.csv` : Fichier contenant les données brutes.
+- `perceptron.py` : Implémentation du perceptron personnalisé.
+- `notebook.ipynb` : Analyse complète et modélisation dans un notebook interactif.
 
 ---
 
-## **Résultats principaux**
-- **Modèle utilisé :** Perceptron personnalisé.
-- **Performance :**
-  - Précision globale : 97.37 %
-  - ROC-AUC : 1.00
+## **Dépendances**
 
-Ces résultats montrent que le perceptron fonctionne très bien sur ce problème, grâce à une forte linéarité des données après réduction dimensionnelle via ACP.
+- Python 3.x
+- Bibliothèques : `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`
 
 ---
 
-## **Limitations et améliorations possibles**
-1. **Validation croisée :** Tester le modèle sur différents sous-ensembles pour confirmer la robustesse.
-2. **Gestion du déséquilibre des classes :** Utiliser des techniques comme le sur/sous-échantillonnage ou pondérer les classes.
-3. **Modèles avancés :** Explorer des modèles comme SVM ou réseaux de neurones pour des données plus complexes.
-4. **Extension des données :** Ajouter des jeux de données variés pour généraliser les performances du modèle.
+## **Exécution**
 
----
+1. Clonez le dépôt.
+2. Installez les dépendances via pip :
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Lancez le notebook pour reproduire l’analyse :
+   ```bash
+   jupyter notebook notebook.ipynb
+   ```
 
-## **Contributeurs**
-- Auteur : [Votre Nom ou Pseudonyme]
-- Contributions ouvertes via pull requests.
 
----
-
-## **Licence**
-Ce projet est sous licence MIT. Consultez le fichier `LICENSE` pour plus d'informations.
 
 
