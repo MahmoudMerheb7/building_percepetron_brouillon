@@ -137,6 +137,3 @@ Un perceptron a été implémenté manuellement avec les caractéristiques suiva
 - Bibliothèques : `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`
 
 ---
-
-er notebook notebook.ipynb
-   ```
