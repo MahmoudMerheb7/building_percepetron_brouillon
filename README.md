@@ -1,4 +1,4 @@
-# ** Analyse des Données et Modélisation avec le Perceptron**
+# **Analyse des Données et Modélisation avec le Perceptron**
 
 ## **Introduction**
 
